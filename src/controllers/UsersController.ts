@@ -1,13 +1,30 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
+import UserRepository from '../repositories/UsersRepository';
+import CreateUserService from '../services/CreateUserService';
 
 class UserController {
-  public async create(request: Request, response: Response): Promise<User> {
+  public async create(request: Request, response: Response): Promise<Response> {
     const { name, email, password } = request.body;
 
-    const user = new User(name, email, password);
+    const userRepository = new UserRepository();
 
-    return response.json(user);
+    const createUser = new CreateUserService(userRepository);
+
+    const user = await createUser.execute({
+      name,
+      email,
+      password,
+    });
+
+    const userWithoutPassword = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    };
+
+    return response.json(userWithoutPassword);
   }
 }
 
