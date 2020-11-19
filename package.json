@@ -13,6 +13,7 @@
   "dependencies": {
     "apollo-server-express": "^2.19.0",
     "bcryptjs": "^2.4.3",
+    "celebrate": "^13.0.4",
     "express": "^4.17.1",
     "graphql": "^15.4.0",
     "pg": "^8.5.1",
