@@ -10,6 +10,7 @@ import { Field, Float, ObjectType } from "type-graphql";
 @ObjectType()
 @Entity('cars')
 class Car {
+  @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
