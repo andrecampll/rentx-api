@@ -12,6 +12,7 @@ import CarsRepository from '../repositories/cars/CarsRepository';
 import CreateCarService from '../services/CreateCarService';
 import ListCarsService from '../services/ListCarsService';
 import UpdateCarService from '../services/UpdateCarService';
+import DeleteCarService from '../services/DeleteCarService';
 
 @InputType()
 class CarRequest {
@@ -38,6 +39,12 @@ class UpdateCarRequest {
 
   @Field()
   daily_value?: number;
+}
+
+@InputType()
+class DeleteCarRequest {
+  @Field()
+  id: string;
 }
 
 @ObjectType()
@@ -86,12 +93,12 @@ export class CarResolver {
   }
 
   @Query(() => [Car])
-  async cars(): Promise<Car[] | undefined> {
+  async readCars(): Promise<Car[] | undefined> {
     const carsRepository = new CarsRepository();
 
-    const createCar = new ListCarsService(carsRepository);
+    const readCars = new ListCarsService(carsRepository);
 
-    const { cars } = await createCar.execute();
+    const { cars } = await readCars.execute();
 
     return cars;
   }
@@ -100,13 +107,13 @@ export class CarResolver {
   async updateCar(
     @Arg('options') options: UpdateCarRequest
   ): Promise<CarResponse> {
-    const { name, brand, daily_value, id } = options;
+    const { id, name, brand, daily_value } = options;
 
     const carsRepository = new CarsRepository();
 
-    const createCar = new UpdateCarService(carsRepository);
+    const updateCar = new UpdateCarService(carsRepository);
 
-    const { car, errors } = await createCar.execute({
+    const { car, errors } = await updateCar.execute({
       id,
       name,
       brand,
@@ -120,20 +127,17 @@ export class CarResolver {
   }
 
   @Mutation(() => CarResponse)
-  async delete(
-    @Arg('options') options: UpdateCarRequest
+  async deleteCar(
+    @Arg('options') options: DeleteCarRequest
   ): Promise<CarResponse> {
-    const { name, brand, daily_value, id } = options;
+    const { id } = options;
 
     const carsRepository = new CarsRepository();
 
-    const createCar = new UpdateCarService(carsRepository);
+    const deleteCar = new DeleteCarService(carsRepository);
 
-    const { car, errors } = await createCar.execute({
+    const { car, errors } = await deleteCar.execute({
       id,
-      name,
-      brand,
-      daily_value
     });
 
     return {
