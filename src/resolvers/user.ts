@@ -12,7 +12,7 @@ import CreateUserService from '../services/CreateUserService';
 import CreateSessionService from '../services/CreateSessionService';
 
 @InputType()
-class Request {
+class RegisterRequest {
   @Field()
   name: string;
 
@@ -46,7 +46,7 @@ export class UserResolver {
 
   @Mutation(() => Response)
   async register(
-    @Arg('options') options: Request,
+    @Arg('options') options: RegisterRequest,
   ): Promise<Response> {
     const { name, email, password } = options;
 
