@@ -1,7 +1,7 @@
-import { Arg, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
+import { Arg, Field, Mutation, InputType, Resolver } from 'type-graphql';
 import Car from '../models/Car';
 
-@ObjectType()
+@InputType()
 class CarFields {
   @Field()
   name: string;
