@@ -5,12 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Field, ObjectType } from "type-graphql";
-import { Exclude } from 'class-transformer';
+import { Field, Float, ObjectType } from "type-graphql";
 
 @ObjectType()
-@Entity('users')
-class User {
+@Entity('cars')
+class Car {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,14 +19,11 @@ class User {
 
   @Field()
   @Column()
-  email: string;
+  brand: string;
 
-  @Exclude()
+  @Field(() => Float)
   @Column()
-  password: string;
-
-  @Column()
-  avatar: string;
+  daily_value: number;
 
   @Field()
   @CreateDateColumn()
@@ -38,4 +34,4 @@ class User {
   updated_at: Date;
 }
 
-export default User;
+export default Car;
