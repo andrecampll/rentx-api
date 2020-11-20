@@ -33,28 +33,40 @@ class AuthRequest {
 }
 
 @ObjectType()
-class Response {
-  @Field(() => String)
+class FieldError {
+  @Field()
+  field: string;
+
+  @Field()
+  message: string;
+}
+
+@ObjectType()
+class IResponse {
+  @Field(() => String, { nullable: true })
   token?: string
 
-  @Field(() => User)
-  user: User
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[]
+
+  @Field(() => User, { nullable: true })
+  user?: User
 }
 
 @Resolver()
 export class UserResolver {
 
-  @Mutation(() => Response)
+  @Mutation(() => IResponse)
   async register(
     @Arg('options') options: RegisterRequest,
-  ): Promise<Response> {
+  ): Promise<IResponse> {
     const { name, email, password } = options;
 
     const userRepository = new UsersRepository();
 
     const createUser = new CreateUserService(userRepository);
 
-    const user = await createUser.execute({
+    const { user, errors } = await createUser.execute({
       name,
       email,
       password,
@@ -62,20 +74,21 @@ export class UserResolver {
 
     return {
       user,
+      errors,
     };
   }
 
-  @Mutation(() => Response)
+  @Mutation(() => IResponse)
   async login(
     @Arg('options') options: AuthRequest,
-  ): Promise<Response> {
+  ): Promise<IResponse> {
     const { email, password } = options;
 
     const userRepository = new UsersRepository();
 
     const authenticateUser = new CreateSessionService(userRepository);
 
-    const { user, token } = await authenticateUser.execute({
+    const { user, errors, token } = await authenticateUser.execute({
       email,
       password,
     });
@@ -83,6 +96,7 @@ export class UserResolver {
     return {
       user,
       token,
+      errors,
     };
   }
 }
