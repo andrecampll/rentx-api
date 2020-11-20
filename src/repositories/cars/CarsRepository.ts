@@ -26,6 +26,30 @@ class CarsRepository implements ICarsRepository {
 
     return car;
   }
+
+  public async findAll(): Promise<Car[]> {
+    const cars = await this.ormRepository.find();
+
+    return cars;
+  }
+
+  public async findById(id: string): Promise<Car | undefined> {
+    const car = await this.ormRepository.findOne({
+      where: { id }
+    });
+
+    return car;
+  }
+
+  public async save(car: Car): Promise<Car> {
+    return await this.ormRepository.save(car);
+  }
+
+  public async destroy(id: string): Promise<void> {
+    await this.ormRepository.delete({
+      id
+    });
+  }
 }
 
 export default CarsRepository;
