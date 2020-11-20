@@ -8,14 +8,8 @@ interface FieldError {
   message: string;
 }
 
-interface Request {
-  name: string;
-  brand: string;
-  daily_value: number;
-}
-
 interface IResponse {
-  car?: Car;
+  cars?: Car[];
   errors?: FieldError[];
 }
 
@@ -23,10 +17,10 @@ class ListCarsService {
   constructor(private carsRepository: ICarsRepository) {}
 
   public async execute(): Promise<IResponse> {
-
+    const cars = await this.carsRepository.findAll();
 
     return {
-      car: classToClass(car),
+      cars,
     };
   }
 }

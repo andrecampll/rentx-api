@@ -27,12 +27,6 @@ class CreateCarService {
     brand,
     daily_value,
   }: Request): Promise<IResponse> {
-    const car = await this.carsRepository.create({
-      name,
-      brand,
-      daily_value,
-    });
-
     if (!name) {
       return {
         errors: [{
@@ -59,6 +53,12 @@ class CreateCarService {
         }]
       }
     }
+
+    const car = await this.carsRepository.create({
+      name,
+      brand,
+      daily_value,
+    });
 
     return {
       car: classToClass(car),
