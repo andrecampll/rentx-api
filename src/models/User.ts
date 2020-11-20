@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Field, Int, ObjectType } from "type-graphql";
+import { Exclude } from 'class-transformer';
 
 @ObjectType()
 @Entity('users')
@@ -21,8 +22,12 @@ class User {
   @Column()
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
+
+  @Column()
+  avatar: string;
 
   @Field()
   @CreateDateColumn()

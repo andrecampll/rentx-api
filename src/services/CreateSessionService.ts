@@ -1,7 +1,6 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import AppError from '../errors/AppError';
-
+import { classToClass } from 'class-transformer';
 import authConfig from '../config/auth';
 
 import User from '../models/User';
@@ -33,7 +32,7 @@ class CreateSessionService {
       return {
         errors: [{
           field: 'email/password',
-          message: 'Email ou senha inválidos'
+          message: 'Email ou senha inválidos.'
         }]
       }
     }
@@ -44,7 +43,7 @@ class CreateSessionService {
       return {
         errors: [{
           field: 'email/password',
-          message: 'Email ou senha inválidos'
+          message: 'Email ou senha inválidos.'
         }]
       }
     }
@@ -57,7 +56,7 @@ class CreateSessionService {
     });
 
     return {
-      user,
+      user: classToClass(user),
       token,
     };
   }
