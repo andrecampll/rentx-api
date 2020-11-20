@@ -12,6 +12,6 @@
 		"migrationsDir": "./src/database/migrations"
   },
   "entities": [
-    "./src/models/*.ts"
+    "./src/models/**.ts"
   ]
 }

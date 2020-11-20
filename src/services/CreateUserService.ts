@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs';
 import User from '../models/User';
-import IUsersRepository from '../repositories/IUsersRepository';
+import IUsersRepository from '../repositories/users/IUsersRepository';
+import { classToClass } from 'class-transformer';
 
 interface FieldError {
   field: string;
@@ -26,7 +27,7 @@ class CreateUserService {
 
     if (checkUserExists) {
       return {
-        errors: [{ field: 'email', message: 'Email já utilizado' }],
+        errors: [{ field: 'email', message: 'Email já utilizado.' }],
       }
     }
 
@@ -39,7 +40,7 @@ class CreateUserService {
     });
 
     return {
-      user,
+      user: classToClass(user),
     };
   }
 }

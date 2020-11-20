@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserRepository from '../repositories/UsersRepository';
+import UserRepository from '../repositories/users/UsersRepository';
 import CreateSessionsService from '../services/CreateSessionService';
 
 class SessionController {
@@ -15,15 +15,7 @@ class SessionController {
       password,
     });
 
-    const userWithoutPassword = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json({ userWithoutPassword, token });
+    return response.json({ user, token });
   }
 }
 
