@@ -11,6 +11,7 @@ import Car from '../models/Car';
 import CarsRepository from '../repositories/cars/CarsRepository';
 import CreateCarService from '../services/CreateCarService';
 import ListCarsService from '../services/ListCarsService';
+import UpdateCarService from '../services/UpdateCarService';
 
 @InputType()
 class CarRequest {
@@ -22,6 +23,21 @@ class CarRequest {
 
   @Field()
   daily_value: number;
+}
+
+@InputType()
+class UpdateCarRequest {
+  @Field()
+  id: string;
+
+  @Field()
+  name?: string;
+
+  @Field()
+  brand?: string;
+
+  @Field()
+  daily_value?: number;
 }
 
 @ObjectType()
@@ -78,5 +94,51 @@ export class CarResolver {
     const { cars } = await createCar.execute();
 
     return cars;
+  }
+
+  @Mutation(() => CarResponse)
+  async updateCar(
+    @Arg('options') options: UpdateCarRequest
+  ): Promise<CarResponse> {
+    const { name, brand, daily_value, id } = options;
+
+    const carsRepository = new CarsRepository();
+
+    const createCar = new UpdateCarService(carsRepository);
+
+    const { car, errors } = await createCar.execute({
+      id,
+      name,
+      brand,
+      daily_value
+    });
+
+    return {
+      car,
+      errors
+    };
+  }
+
+  @Mutation(() => CarResponse)
+  async delete(
+    @Arg('options') options: UpdateCarRequest
+  ): Promise<CarResponse> {
+    const { name, brand, daily_value, id } = options;
+
+    const carsRepository = new CarsRepository();
+
+    const createCar = new UpdateCarService(carsRepository);
+
+    const { car, errors } = await createCar.execute({
+      id,
+      name,
+      brand,
+      daily_value
+    });
+
+    return {
+      car,
+      errors
+    };
   }
 }
