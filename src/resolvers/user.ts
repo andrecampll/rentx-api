@@ -7,7 +7,7 @@ import {
   Resolver,
 } from 'type-graphql';
 import User from '../models/User';
-import UsersRepository from '../repositories/UsersRepository';
+import UsersRepository from '../repositories/users/UsersRepository';
 import CreateUserService from '../services/CreateUserService';
 import CreateSessionService from '../services/CreateSessionService';
 

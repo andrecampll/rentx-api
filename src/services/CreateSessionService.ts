@@ -4,7 +4,7 @@ import { classToClass } from 'class-transformer';
 import authConfig from '../config/auth';
 
 import User from '../models/User';
-import IUserRepository from '../repositories/IUsersRepository';
+import IUserRepository from '../repositories/users/IUsersRepository';
 
 interface FieldError {
   field: string;

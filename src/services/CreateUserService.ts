@@ -1,6 +1,6 @@
 import { hash } from 'bcryptjs';
 import User from '../models/User';
-import IUsersRepository from '../repositories/IUsersRepository';
+import IUsersRepository from '../repositories/users/IUsersRepository';
 import { classToClass } from 'class-transformer';
 
 interface FieldError {
