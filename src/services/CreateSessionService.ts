@@ -7,30 +7,46 @@ import authConfig from '../config/auth';
 import User from '../models/User';
 import IUserRepository from '../repositories/IUsersRepository';
 
-interface Request {
+interface FieldError {
+  field: string;
+  message: string;
+}
+
+interface IRequest {
   email: string;
   password: string;
 }
 
-interface Response {
-  user: User;
-  token: string;
+interface IResponse {
+  user?: User;
+  token?: string;
+  errors?: FieldError[];
 }
 
 class CreateSessionService {
   constructor(private userRepository: IUserRepository) {}
 
-  public async execute({ email, password }: Request): Promise<Response> {
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('Email ou senha inválidos', 401);
+      return {
+        errors: [{
+          field: 'email/password',
+          message: 'Email ou senha inválidos'
+        }]
+      }
     }
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      throw new AppError('Email ou senha inválidos', 401);
+      return {
+        errors: [{
+          field: 'email/password',
+          message: 'Email ou senha inválidos'
+        }]
+      }
     }
 
     const { secret, expiresIn } = authConfig.jwt;
