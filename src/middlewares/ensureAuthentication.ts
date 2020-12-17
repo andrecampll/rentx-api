@@ -7,11 +7,9 @@ interface IContext {
 }
 
 const authenticationAssurance: AuthChecker<IContext> = ({ context }): boolean => {
-  const authHeaders = context.token;
+  const { token } = context;
 
-  if (!authHeaders) return false;
-
-  const [, token] = authHeaders.split(' ');
+  if (!token) return false;
 
   try {
     const decoded = verify(token, authConfig.jwt.secret);
