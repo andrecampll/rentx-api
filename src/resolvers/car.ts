@@ -6,6 +6,7 @@ import {
   Resolver,
   ObjectType,
   Query,
+  Authorized,
 } from 'type-graphql';
 import Car from '../models/Car';
 import CarsRepository from '../repositories/cars/CarsRepository';
@@ -71,6 +72,7 @@ class CarResponse {
 @Resolver()
 export class CarResolver {
   @Mutation(() => CarResponse)
+  @Authorized()
   async createCar(
     @Arg('options') options: CarRequest
   ): Promise<CarResponse> {
@@ -93,6 +95,7 @@ export class CarResolver {
   }
 
   @Query(() => [Car])
+  @Authorized()
   async readCars(): Promise<Car[] | undefined> {
     const carsRepository = new CarsRepository();
 
@@ -104,6 +107,7 @@ export class CarResolver {
   }
 
   @Mutation(() => CarResponse)
+  @Authorized()
   async updateCar(
     @Arg('options') options: UpdateCarRequest
   ): Promise<CarResponse> {
@@ -127,6 +131,7 @@ export class CarResolver {
   }
 
   @Mutation(() => CarResponse)
+  @Authorized()
   async deleteCar(
     @Arg('options') options: DeleteCarRequest
   ): Promise<CarResponse> {
