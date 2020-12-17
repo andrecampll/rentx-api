@@ -21,8 +21,6 @@ app.use(cors({
   origin: "http://localhost:8081",
   credentials: true,
 }));
-// app.use(express.json());
-// app.use(routes);
 app.use(errors());
 
 const main = async () => {
@@ -31,6 +29,14 @@ const main = async () => {
       resolvers: [HelloResolver, UserResolver, CarResolver],
       validate: false,
     }),
+    context: ({ req }) => {
+      const context = {
+        req,
+        token: req?.headers?.authorization,
+      };
+
+      return context;
+    }
   });
 
   apolloServer.applyMiddleware({
