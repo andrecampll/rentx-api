@@ -8,12 +8,8 @@ import cors from 'cors';
 import AppError from './errors/AppError';
 import './database';
 
-import routes from './routes';
+import buildSchema from './schemas';
 import { ApolloServer } from 'apollo-server-express';
-import { buildSchema } from 'type-graphql';
-import { HelloResolver } from './resolvers/hello';
-import { UserResolver } from './resolvers/user';
-import { CarResolver } from './resolvers/car';
 
 const app = express();
 
@@ -24,11 +20,10 @@ app.use(cors({
 app.use(errors());
 
 const main = async () => {
+  const schema = await buildSchema();
+
   const apolloServer = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, CarResolver],
-      validate: false,
-    }),
+    schema,
     context: ({ req }) => {
       const context = {
         req,
